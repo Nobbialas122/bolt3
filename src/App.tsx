@@ -6,6 +6,7 @@ import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import SuccessPage from './components/SuccessPage';
 import Cart from './components/Cart';
+import EmailCapturePopup from './components/EmailCapturePopup';
 import { CartProvider } from './context/CartContext';
 import { Product } from './types';
 import { products } from './data/products';
@@ -13,6 +14,9 @@ import { products } from './data/products';
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [showEmailPopup, setShowEmailPopup] = useState(false);
+  const [hasSeenPopup, setHasSeenPopup] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   const handleNavigate = (page: string) => {
     setCurrentPage(page);
@@ -31,6 +35,41 @@ function App() {
 
   const handleContinueShopping = () => {
     setCurrentPage('home');
+  };
+
+  // Email popup logic - show after 10 seconds if not seen before
+  useEffect(() => {
+    const hasSeenBefore = localStorage.getItem('symora-email-popup-seen');
+    const savedEmail = localStorage.getItem('symora-user-email');
+    
+    if (savedEmail) {
+      setUserEmail(savedEmail);
+    }
+    
+    if (!hasSeenBefore && !savedEmail) {
+      const timer = setTimeout(() => {
+        setShowEmailPopup(true);
+      }, 10000); // Show after 10 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleEmailSubmit = (email: string) => {
+    setUserEmail(email);
+    setHasSeenPopup(true);
+    localStorage.setItem('symora-email-popup-seen', 'true');
+    localStorage.setItem('symora-user-email', email);
+    localStorage.setItem('symora-discount-code', 'WELCOME10');
+    
+    // Show success message (you could add a toast notification here)
+    alert('🎉 Welcome! Your 10% discount code WELCOME10 has been applied to your next purchase!');
+  };
+
+  const handleCloseEmailPopup = () => {
+    setShowEmailPopup(false);
+    setHasSeenPopup(true);
+    localStorage.setItem('symora-email-popup-seen', 'true');
   };
 
   // Listen for success page navigation
@@ -76,6 +115,20 @@ function App() {
                 >
                   <div className="group">
                     <div className="relative overflow-hidden rounded-lg bg-gray-50 aspect-square mb-4">
+                      {/* Product badges */}
+                      <div className="absolute top-2 left-2 z-10 flex flex-col space-y-1">
+                        {product.originalPrice && product.originalPrice > product.price && (
+                          <div className="bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold">
+                            {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                          </div>
+                        )}
+                        {product.isBestSeller && (
+                          <div className="bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                            BEST SELLER
+                          </div>
+                        )}
+                      </div>
+
                       <img
                         src={product.images[0]}
                         alt={product.name}
@@ -96,7 +149,12 @@ function App() {
                         {product.name}
                       </h3>
                       <p className="text-gray-600 text-sm line-clamp-2">{product.description}</p>
-                      <p className="text-xl font-semibold text-gray-900">€{product.price.toFixed(2)}</p>
+                      <div className="flex items-center justify-center space-x-2">
+                        {product.originalPrice && product.originalPrice > product.price && (
+                          <span className="text-sm text-gray-500 line-through">€{product.originalPrice.toFixed(2)}</span>
+                        )}
+                        <span className="text-xl font-semibold text-gray-900">€{product.price.toFixed(2)}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -123,6 +181,13 @@ function App() {
         <Header currentPage={currentPage} onNavigate={handleNavigate} />
         <main>{renderCurrentPage()}</main>
         <Cart />
+        
+        {/* Email Capture Popup */}
+        <EmailCapturePopup
+          isOpen={showEmailPopup}
+          onClose={handleCloseEmailPopup}
+          onEmailSubmit={handleEmailSubmit}
+        />
       </div>
     </CartProvider>
   );

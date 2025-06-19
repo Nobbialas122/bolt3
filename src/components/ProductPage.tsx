@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { ArrowLeft, Plus, Check, Star, Shield, Truck } from 'lucide-react';
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
+import DiscountBadge from './DiscountBadge';
+import BundleOffer from './BundleOffer';
 
 interface ProductPageProps {
   product: Product;
@@ -42,11 +44,37 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, onBack }) => {
           Back to Products
         </button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
           {/* Product Images */}
           <div className="space-y-4 animate-fadeInUp">
             {/* Main Image */}
-            <div className="aspect-square bg-gray-50 rounded-2xl overflow-hidden">
+            <div className="aspect-square bg-gray-50 rounded-2xl overflow-hidden relative">
+              {/* Discount badges */}
+              <div className="absolute top-4 left-4 z-10 flex flex-col space-y-2">
+                {product.originalPrice && product.originalPrice > product.price && (
+                  <DiscountBadge 
+                    originalPrice={product.originalPrice} 
+                    currentPrice={product.price}
+                    size="md"
+                  />
+                )}
+                
+                {product.isBestSeller && (
+                  <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1.5 rounded-full text-sm font-bold">
+                    BEST SELLER
+                  </div>
+                )}
+                
+                {product.isLimitedTime && (
+                  <DiscountBadge 
+                    originalPrice={product.originalPrice || product.price} 
+                    currentPrice={product.price}
+                    variant="hot"
+                    size="md"
+                  />
+                )}
+              </div>
+
               <img
                 src={product.images[currentImageIndex]}
                 alt={product.name}
@@ -76,7 +104,23 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, onBack }) => {
           <div className="space-y-8 animate-fadeInUp animation-delay-300">
             <div>
               <h1 className="text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
-              <p className="text-3xl font-bold text-gray-900 mb-6">€{product.price.toFixed(2)}</p>
+              
+              {/* Price section with discount */}
+              <div className="flex items-center space-x-4 mb-6">
+                {product.originalPrice && product.originalPrice > product.price && (
+                  <span className="text-2xl text-gray-500 line-through">€{product.originalPrice.toFixed(2)}</span>
+                )}
+                <span className="text-4xl font-bold text-gray-900">€{product.price.toFixed(2)}</span>
+                {product.originalPrice && product.originalPrice > product.price && (
+                  <DiscountBadge 
+                    originalPrice={product.originalPrice} 
+                    currentPrice={product.price}
+                    variant="amount"
+                    size="lg"
+                  />
+                )}
+              </div>
+              
               <p className="text-lg text-gray-600 leading-relaxed">{product.description}</p>
             </div>
 
@@ -152,6 +196,11 @@ const ProductPage: React.FC<ProductPageProps> = ({ product, onBack }) => {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Bundle Offer Section */}
+        <div className="animate-fadeInUp animation-delay-600">
+          <BundleOffer product={product} onViewProduct={() => {}} />
         </div>
       </div>
     </div>

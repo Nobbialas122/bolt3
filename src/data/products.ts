@@ -5,6 +5,7 @@ export const products: Product[] = [
     id: '1',
     name: 'SYMORA Posture Corrector Pro',
     price: 29.99,
+    originalPrice: 49.99,
     images: [
       '/posture crrector.PNG',
       'https://images.pexels.com/photos/6975473/pexels-photo-6975473.jpeg?auto=compress&cs=tinysrgb&w=800',
@@ -20,12 +21,15 @@ export const products: Product[] = [
       'Breathable premium materials',
       'Invisible under clothing'
     ],
-    category: 'posture'
+    category: 'posture',
+    isOnSale: true,
+    isBestSeller: true
   },
   {
     id: '2',
     name: 'SYMORA Neck Stretcher Elite',
     price: 29.99,
+    originalPrice: 39.99,
     images: [
       'https://images.pexels.com/photos/6975420/pexels-photo-6975420.jpeg?auto=compress&cs=tinysrgb&w=800',
       'https://images.pexels.com/photos/6975419/pexels-photo-6975419.jpeg?auto=compress&cs=tinysrgb&w=800',
@@ -40,12 +44,15 @@ export const products: Product[] = [
       'Easy 10-minute sessions',
       'Clinically tested results'
     ],
-    category: 'recovery'
+    category: 'recovery',
+    isOnSale: true,
+    isNew: true
   },
   {
     id: '3',
     name: 'SYMORA Recovery Massage Tool',
     price: 29.99,
+    originalPrice: 44.99,
     images: [
       'https://images.pexels.com/photos/7203681/pexels-photo-7203681.jpeg?auto=compress&cs=tinysrgb&w=800',
       'https://images.pexels.com/photos/6740822/pexels-photo-6740822.jpeg?auto=compress&cs=tinysrgb&w=800',
@@ -60,12 +67,14 @@ export const products: Product[] = [
       'Durable construction',
       'Travel-friendly size'
     ],
-    category: 'massage'
+    category: 'massage',
+    isOnSale: true
   },
   {
     id: '4',
     name: 'SYMORA Alignment Support',
     price: 29.99,
+    originalPrice: 42.99,
     images: [
       'https://images.pexels.com/photos/6975475/pexels-photo-6975475.jpeg?auto=compress&cs=tinysrgb&w=800',
       'https://images.pexels.com/photos/7203687/pexels-photo-7203687.jpeg?auto=compress&cs=tinysrgb&w=800',
@@ -80,6 +89,8 @@ export const products: Product[] = [
       'Discreet design',
       'Scientifically proven'
     ],
-    category: 'alignment'
+    category: 'alignment',
+    isOnSale: true,
+    isLimitedTime: true
   }
 ];

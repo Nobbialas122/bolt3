@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Product } from '../types';
+import DiscountBadge from './DiscountBadge';
 
 interface ProductCardProps {
   product: Product;
@@ -30,6 +31,38 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onViewProduct }) => 
       onMouseLeave={handleMouseLeave}
     >
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-50 to-gray-100 aspect-square mb-6 shadow-lg hover:shadow-2xl transition-all duration-500">
+        {/* Product Badges */}
+        <div className="absolute top-4 left-4 z-10 flex flex-col space-y-2">
+          {product.originalPrice && product.originalPrice > product.price && (
+            <DiscountBadge 
+              originalPrice={product.originalPrice} 
+              currentPrice={product.price}
+              size="sm"
+            />
+          )}
+          
+          {product.isBestSeller && (
+            <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+              BEST SELLER
+            </div>
+          )}
+          
+          {product.isNew && (
+            <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+              NEW
+            </div>
+          )}
+          
+          {product.isLimitedTime && (
+            <DiscountBadge 
+              originalPrice={product.originalPrice || product.price} 
+              currentPrice={product.price}
+              variant="hot"
+              size="sm"
+            />
+          )}
+        </div>
+
         {/* Main Product Image */}
         <img
           src={product.images[currentImageIndex]}
@@ -48,7 +81,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onViewProduct }) => 
         <div className={`absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-2xl px-4 py-2 shadow-lg transition-all duration-300 ${
           isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
         }`}>
-          <span className="text-lg font-bold text-gray-900">€{product.price.toFixed(2)}</span>
+          <div className="text-center">
+            {product.originalPrice && product.originalPrice > product.price && (
+              <div className="text-xs text-gray-500 line-through">€{product.originalPrice.toFixed(2)}</div>
+            )}
+            <span className="text-lg font-bold text-gray-900">€{product.price.toFixed(2)}</span>
+          </div>
         </div>
         
         {/* Quick View Button */}
@@ -85,8 +123,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onViewProduct }) => 
         </div>
         
         <div className="pt-2">
-          <span className="text-2xl font-bold text-gray-900">€{product.price.toFixed(2)}</span>
-          <span className="text-gray-500 text-sm ml-2">Free shipping</span>
+          <div className="flex items-center justify-center space-x-2">
+            {product.originalPrice && product.originalPrice > product.price && (
+              <span className="text-lg text-gray-500 line-through">€{product.originalPrice.toFixed(2)}</span>
+            )}
+            <span className="text-2xl font-bold text-gray-900">€{product.price.toFixed(2)}</span>
+          </div>
+          <span className="text-gray-500 text-sm">Free shipping</span>
         </div>
       </div>
     </div>
