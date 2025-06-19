@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Plus, Minus, ShoppingBag, CreditCard, Shield } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import PaymentModal from './PaymentModal';
+import PaymentLogos from './PaymentLogos';
 
 const Cart: React.FC = () => {
   const { cart, removeFromCart, updateQuantity, toggleCart, clearCart } = useCart();
@@ -152,7 +153,7 @@ const Cart: React.FC = () => {
                     <span>Secure Checkout</span>
                   </button>
 
-                  <div className="text-center space-y-1">
+                  <div className="text-center space-y-3">
                     <div className="flex items-center justify-center space-x-4 text-xs text-gray-500">
                       <div className="flex items-center space-x-1">
                         <Shield className="h-3 w-3" />
@@ -163,6 +164,13 @@ const Cart: React.FC = () => {
                       <div>•</div>
                       <div>Free shipping</div>
                     </div>
+                    
+                    {/* Payment Logos */}
+                    <div className="flex flex-col items-center space-y-2">
+                      <p className="text-xs text-gray-400">We accept</p>
+                      <PaymentLogos size="sm" />
+                    </div>
+                    
                     <p className="text-xs text-gray-400">Powered by Stripe</p>
                   </div>
                 </div>

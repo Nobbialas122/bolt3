@@ -3,6 +3,7 @@ import { X, CreditCard, Smartphone, Wallet, Shield, Lock } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from './CheckoutForm';
+import PaymentLogos from './PaymentLogos';
 
 // Demo Stripe publishable key (this would be your real key in production)
 const stripePromise = loadStripe('pk_test_51OaBC2DEFghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789');
@@ -257,17 +258,27 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
               {/* Trust Indicators */}
               <div className="mt-6 pt-6 border-t border-gray-200">
-                <div className="flex items-center justify-center space-x-6 text-xs text-gray-500">
-                  <div className="flex items-center space-x-1">
-                    <Shield className="h-4 w-4" />
-                    <span>Secure</span>
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="flex items-center justify-center space-x-6 text-xs text-gray-500">
+                    <div className="flex items-center space-x-1">
+                      <Shield className="h-4 w-4" />
+                      <span>Secure</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Lock className="h-4 w-4" />
+                      <span>Encrypted</span>
+                    </div>
+                    <div>30-day guarantee</div>
+                    <div>Free returns</div>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <Lock className="h-4 w-4" />
-                    <span>Encrypted</span>
+                  
+                  {/* Payment Logos */}
+                  <div className="flex flex-col items-center space-y-2">
+                    <p className="text-xs text-gray-500">Accepted payment methods</p>
+                    <PaymentLogos size="md" />
                   </div>
-                  <div>30-day guarantee</div>
-                  <div>Free returns</div>
+                  
+                  <p className="text-xs text-gray-400">Powered by Stripe • Trusted by millions worldwide</p>
                 </div>
               </div>
             </div>

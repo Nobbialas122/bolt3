@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Loader2, CreditCard, Shield, Check, AlertCircle } from 'lucide-react';
+import PaymentLogos from './PaymentLogos';
 
 interface CheckoutFormProps {
   onSuccess: () => void;
@@ -213,9 +214,17 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onSuccess, onCancel, total 
           <CardElement options={cardElementOptions} />
         </div>
         
-        <p className="text-xs text-gray-500 mt-2">
-          Use 4242 4242 4242 4242 for demo • Any future date • Any 3-digit CVC
-        </p>
+        <div className="mt-3 space-y-2">
+          <p className="text-xs text-gray-500">
+            Use 4242 4242 4242 4242 for demo • Any future date • Any 3-digit CVC
+          </p>
+          
+          {/* Accepted Cards */}
+          <div className="flex items-center space-x-2">
+            <span className="text-xs text-gray-500">We accept:</span>
+            <PaymentLogos size="sm" />
+          </div>
+        </div>
       </div>
 
       {/* Security Features */}
